@@ -3,13 +3,16 @@ import { Table } from './types';
 import { INITIAL_TABLES } from './services/mockData';
 import TableNode from './components/TableNode';
 import TableDetails from './components/TableDetails';
-import { Utensils, Bell, Settings, LayoutGrid, Search } from 'lucide-react';
+import { Utensils, Bell, Settings, LayoutGrid, Search, Globe } from 'lucide-react';
+import { useTranslation, Language } from './lib/i18n';
 
 const App: React.FC = () => {
   const [tables, setTables] = useState<Table[]>(INITIAL_TABLES);
   const [selectedTableId, setSelectedTableId] = useState<string | null>(null);
   const [filter, setFilter] = useState<'all' | 'alert' | 'vip'>('all');
+  const [lang, setLang] = useState<Language>('fr');
 
+  const t = useTranslation(lang);
   const selectedTable = tables.find(t => t.id === selectedTableId);
 
   const handleTableClick = (table: Table) => {
@@ -53,21 +56,29 @@ const App: React.FC = () => {
 
           <div className="flex items-center gap-6">
             <div className="flex items-center bg-black/30 rounded-full px-4 py-2 border border-gray-700 gap-4">
-               <div className="flex items-center gap-2 text-sm text-gray-400">
-                 <span className="w-2 h-2 rounded-full bg-restaurant-seated"></span>
-                 <span>Seated: <b className="text-white">{stats.seated}</b></span>
-               </div>
-               <div className="w-px h-4 bg-gray-700"></div>
-               <div className="flex items-center gap-2 text-sm text-gray-400">
-                 <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-                 <span>Alerts: <b className="text-white">{stats.alerts}</b></span>
-               </div>
-               <div className="w-px h-4 bg-gray-700"></div>
-               <div className="flex items-center gap-2 text-sm text-gray-400">
-                 <span className="w-2 h-2 rounded-full bg-restaurant-accent"></span>
-                 <span>VIP: <b className="text-white">{stats.vip}</b></span>
-               </div>
+              <div className="flex items-center gap-2 text-sm text-gray-400">
+                <span className="w-2 h-2 rounded-full bg-restaurant-seated"></span>
+                <span>Seated: <b className="text-white">{stats.seated}</b></span>
+              </div>
+              <div className="w-px h-4 bg-gray-700"></div>
+              <div className="flex items-center gap-2 text-sm text-gray-400">
+                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                <span>Alerts: <b className="text-white">{stats.alerts}</b></span>
+              </div>
+              <div className="w-px h-4 bg-gray-700"></div>
+              <div className="flex items-center gap-2 text-sm text-gray-400">
+                <span className="w-2 h-2 rounded-full bg-restaurant-accent"></span>
+                <span>VIP: <b className="text-white">{stats.vip}</b></span>
+              </div>
             </div>
+
+            <button
+              onClick={() => setLang(l => l === 'fr' ? 'en' : 'fr')}
+              className="flex items-center gap-2 px-3 py-1.5 bg-gray-800 hover:bg-gray-700 rounded-lg text-sm transition-colors border border-gray-700"
+            >
+              <Globe size={16} className="text-restaurant-accent" />
+              <span className="font-bold">{lang.toUpperCase()}</span>
+            </button>
 
             <button className="p-2 hover:bg-gray-700 rounded-full transition-colors relative">
               <Bell size={20} />
@@ -79,28 +90,28 @@ const App: React.FC = () => {
 
         {/* Filter / Toolbar */}
         <div className="h-14 border-b border-gray-800 flex items-center px-8 gap-4 bg-restaurant-dark/95 backdrop-blur z-10">
-          <button 
+          <button
             onClick={() => setFilter('all')}
             className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${filter === 'all' ? 'bg-white text-black' : 'hover:bg-gray-800 text-gray-400'}`}
           >
-            All Tables
+            {t('filter_all')}
           </button>
-          <button 
-             onClick={() => setFilter('alert')}
-             className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all flex items-center gap-2 ${filter === 'alert' ? 'bg-red-500 text-white' : 'hover:bg-gray-800 text-gray-400'}`}
+          <button
+            onClick={() => setFilter('alert')}
+            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all flex items-center gap-2 ${filter === 'alert' ? 'bg-red-500 text-white' : 'hover:bg-gray-800 text-gray-400'}`}
           >
             <Bell size={14} /> Attention Needed
           </button>
-          <button 
-             onClick={() => setFilter('vip')}
-             className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all flex items-center gap-2 ${filter === 'vip' ? 'bg-restaurant-accent text-black' : 'hover:bg-gray-800 text-gray-400'}`}
+          <button
+            onClick={() => setFilter('vip')}
+            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all flex items-center gap-2 ${filter === 'vip' ? 'bg-restaurant-accent text-black' : 'hover:bg-gray-800 text-gray-400'}`}
           >
-            <Settings size={14} /> VIP Guests
+            <Settings size={14} /> {t('vip_guest')}
           </button>
-          
+
           <div className="ml-auto flex items-center gap-2 bg-black/20 px-3 py-1.5 rounded-lg border border-gray-700 text-gray-400 w-64">
-             <Search size={16} />
-             <input type="text" placeholder="Search guests or tables..." className="bg-transparent border-none outline-none text-sm w-full placeholder-gray-600" />
+            <Search size={16} />
+            <input type="text" placeholder="Search guests or tables..." className="bg-transparent border-none outline-none text-sm w-full placeholder-gray-600" />
           </div>
         </div>
 
