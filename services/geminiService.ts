@@ -3,7 +3,7 @@ import { Table, Guest, Staff, AIInsightResponse } from '../types';
 
 // Initialize Gemini Client
 // In a real scenario, this would check for existence, but we assume valid env based on prompt rules
-const apiKey = process.env.API_KEY || '';
+const apiKey = process.env.GEMINI_API_KEY || '';
 const ai = new GoogleGenAI({ apiKey });
 
 export const analyzeTableStatus = async (
@@ -22,8 +22,8 @@ export const analyzeTableStatus = async (
       server: staff?.name || 'Unassigned',
     };
 
-    const modelId = 'gemini-3-flash-preview';
-    
+    const modelId = 'gemini-1.5-flash';
+
     const prompt = `
       You are an expert Restaurant Manager AI. Analyze the following table context and provide actionable insights for the floor manager.
       
@@ -44,7 +44,7 @@ export const analyzeTableStatus = async (
           type: Type.OBJECT,
           properties: {
             analysis: { type: Type.STRING },
-            suggested_actions: { 
+            suggested_actions: {
               type: Type.ARRAY,
               items: { type: Type.STRING }
             },
@@ -56,7 +56,7 @@ export const analyzeTableStatus = async (
 
     const text = response.text;
     if (!text) throw new Error("No response from AI");
-    
+
     return JSON.parse(text) as AIInsightResponse;
 
   } catch (error) {
