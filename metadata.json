@@ -1,0 +1,5 @@
+{
+  "name": "DineCommand AI",
+  "description": "Intelligent restaurant floor management system featuring real-time table status monitoring, VIP alerts, and Gemini-powered service insights.",
+  "requestFramePermissions": []
+}
