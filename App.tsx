@@ -41,10 +41,10 @@ const App: React.FC = () => {
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-restaurant-dark text-gray-100 font-sans">
-      
+
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col h-full relative transition-all duration-300 ease-in-out">
-        
+
         {/* Top Navigation Bar */}
         <header className="h-16 border-b border-gray-800 flex items-center justify-between px-8 bg-restaurant-panel z-20">
           <div className="flex items-center gap-3">
@@ -120,10 +120,10 @@ const App: React.FC = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 max-w-7xl mx-auto pb-20">
             {filteredTables.map(table => (
               <div key={table.id} className="flex justify-center">
-                <TableNode 
-                  table={table} 
-                  isSelected={selectedTableId === table.id} 
-                  onClick={handleTableClick} 
+                <TableNode
+                  table={table}
+                  isSelected={selectedTableId === table.id}
+                  onClick={handleTableClick}
                 />
               </div>
             ))}
@@ -132,16 +132,16 @@ const App: React.FC = () => {
       </div>
 
       {/* Right Sidebar - Details Panel */}
-      <div 
+      <div
         className={`
           fixed inset-y-0 right-0 w-96 bg-restaurant-panel shadow-2xl transform transition-transform duration-300 ease-in-out z-30
           ${selectedTableId ? 'translate-x-0' : 'translate-x-full'}
         `}
       >
         {selectedTable && (
-          <TableDetails 
-            table={selectedTable} 
-            onClose={() => setSelectedTableId(null)} 
+          <TableDetails
+            table={selectedTable}
+            onClose={() => setSelectedTableId(null)}
             onUpdateTable={updateTable}
           />
         )}
@@ -149,7 +149,7 @@ const App: React.FC = () => {
 
       {/* Overlay for mobile/tablet when sidebar is open */}
       {selectedTableId && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-20 lg:hidden"
           onClick={() => setSelectedTableId(null)}
         />
